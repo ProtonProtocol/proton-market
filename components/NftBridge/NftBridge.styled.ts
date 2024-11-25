@@ -49,7 +49,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fefefe;
+  // background-color: #fefefe;
   margin: 0 auto 20px;
 `;
 

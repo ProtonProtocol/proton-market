@@ -70,7 +70,7 @@ export const ProtonNft = (props: ProtonNftProps): JSX.Element => {
         }>
         <Image
           src={getImageUrl(
-            props.data.data ? (props.data.data as NFT_ATTR).image : ''
+            (props.data.data as NFT_ATTR).image || (props.data.data as NFT_ATTR).img || ''
           )}
           width="50"
           height="50"

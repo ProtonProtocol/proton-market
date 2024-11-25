@@ -94,12 +94,12 @@ export const ConfirmTeleportModal = (): JSX.Element => {
   const claimNFT = async () => {
     setIsLoading(true);
     if (ethToProton) {
-      const txPreHash = await claimNfts(
-        tokenContract,
-        tokenIds,
-        library.getSigner()
-      );
       try {
+        const txPreHash = await claimNfts(
+          tokenContract,
+          tokenIds,
+          library.getSigner()
+        );
         await txPreHash.wait();
         addToast('Claimed successfully!', {
           appearance: 'success',
@@ -108,8 +108,6 @@ export const ConfirmTeleportModal = (): JSX.Element => {
       } catch (err) {
         addToast('Claim failed.', { appearance: 'error', autoDismiss: true });
         console.log('claim error', err);
-        setIsLoading(false);
-        return;
       }
     } else {
       const claimbackRes = await protonSDK.claimbackTeleport({
@@ -148,7 +146,7 @@ export const ConfirmTeleportModal = (): JSX.Element => {
           </Section>
           <Description>Are you sure you will teleport NFTs?</Description>
           <Section>
-            <HalfButton onClick={claimNFT}>Claim</HalfButton>
+            <HalfButton color="#808080" onClick={claimNFT}>Cancel Teleport</HalfButton>
             <HalfButton onClick={teleportNFT}>Teleport</HalfButton>
           </Section>
         </ModalBox>

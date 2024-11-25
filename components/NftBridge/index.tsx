@@ -502,12 +502,12 @@ const NftBridge = (): JSX.Element => {
             <span style={{ order: 1 }}>From</span>
             <ChainBtn isFrom={transDir === TRANSFER_DIR.ETH_TO_PROTON}>
               <Image
-                width="10px"
+                width="15px"
                 height="15px"
                 alt="swap_button"
-                src="/ethereum.png"
+                src="/polygon-matic-logo.png"
               />
-              <span>Ethereum</span>
+              <span>Polygon</span>
             </ChainBtn>
 
             <SwitchIcon
@@ -600,12 +600,12 @@ const NftBridge = (): JSX.Element => {
                         onClick={() => setNftType(NftType.ATOMIC)}>
                         Atomic Assets
                       </Tab>
-                      <Tab
+                      {/* <Tab
                         selected={nftType === NftType.MINTED_LIST}
                         onClick={() => setNftType(NftType.MINTED_LIST)}
                         align="right">
                         Minted List
-                      </Tab>
+                      </Tab> */}
                     </>
                   )}
                 </Tabs>
@@ -677,57 +677,6 @@ const NftBridge = (): JSX.Element => {
                       <PlusIcon>+</PlusIcon>
                       <span style={{ marginLeft: 10 }}>Add NFT</span>
                     </AddNFTBtn>
-
-                    {/* <InfoBox>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          margin: '10px 0',
-                        }}>
-                        <span>Fee Balance: &nbsp;</span>
-                        <span
-                          style={
-                            checkFeesBalance() ? {} : { color: '#F94E6C' }
-                          }>
-                          {displayNumberAsAmount(
-                            feesBalance?.balance - feesBalance?.reserved,
-                            4,
-                            true
-                          )}{' '}
-                          XPR
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          margin: '10px 0',
-                        }}>
-                        <span>Fee: &nbsp;</span>
-                        {transDir == TRANSFER_DIR.ETH_TO_PROTON && (
-                          <span>
-                            {displayNumberAsAmount(
-                              filteredFees?.port_in_fee,
-                              4,
-                              true
-                            )}{' '}
-                            XPR
-                          </span>
-                        )}
-                        {transDir == TRANSFER_DIR.PROTON_TO_ETH && (
-                          <span>
-                            {displayNumberAsAmount(
-                              filteredFees?.port_out_fee,
-                              4,
-                              true
-                            )}{' '}
-                            XPR
-                          </span>
-                        )}
-                      </div>
-                    </InfoBox> */}
-
                     <TransferBtn onClick={handleTransfer}>
                       <span>Transfer</span>
                     </TransferBtn>

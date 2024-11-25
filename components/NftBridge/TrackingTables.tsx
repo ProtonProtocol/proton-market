@@ -16,6 +16,7 @@ import {
   TableDataCell,
 } from './NftBridge.styled';
 import TableContentWrapper from '../TableContentWraper';
+import protonSDK from '../../services/proton';
 
 interface Props {
   selectedTab: NftType;
@@ -75,10 +76,10 @@ export const TrackingTables = (props: Props): JSX.Element => {
         library.getSigner()
       );
       await txPreHash.wait();
-      const temp = depositList.filter(
+      const list = depositList.filter(
         (el) => el.contract != contract && el.tokenId.toHexString() != tokenId
       );
-      setDepositList(temp);
+      setDepositList(list);
       addToast('Claimed successfully!', {
         appearance: 'success',
         autoDismiss: true,
@@ -90,6 +91,28 @@ export const TrackingTables = (props: Props): JSX.Element => {
       addToast('Claim failed.', { appearance: 'error', autoDismiss: true });
       setIsLoading(false);
       console.log('claim error', err);
+    }
+  };
+
+  const claimProton = async (assetId: string) => {
+    const claimbackRes = await protonSDK.claimbackTeleport({
+      asset_id: assetId,
+    });
+
+    if (!claimbackRes.success) {
+      addToast('Claim back failed.', {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+      setIsLoading(false);
+      return;
+    } else {
+      const list = mintedList.filter(_ => _.asset_id != assetId);
+      setMintedList(list);
+      addToast('Claimed successfully!', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
     }
   };
 
@@ -106,7 +129,7 @@ export const TrackingTables = (props: Props): JSX.Element => {
                 <TableHeaderCell width={25}>OWNER</TableHeaderCell>
                 <TableHeaderCell width={25}>COLLECTION</TableHeaderCell>
                 <TableHeaderCell width={25}>TOKEN ID</TableHeaderCell>
-                <TableHeaderCell width={20}>ACTIONS</TableHeaderCell>
+                <TableHeaderCell width={20}>ACTION</TableHeaderCell>
               </TableHeaderRow>
             </thead>
             <tbody>
@@ -134,7 +157,7 @@ export const TrackingTables = (props: Props): JSX.Element => {
                           onClick={() =>
                             claimEth(el.collection, el.tokenId.toHexString())
                           }>
-                          Claim
+                          Back to owner
                         </Button>
                       </TableDataCell>
                     </TableRow>
@@ -153,6 +176,7 @@ export const TrackingTables = (props: Props): JSX.Element => {
                 <TableHeaderCell width={5}>#</TableHeaderCell>
                 <TableHeaderCell width={25}>Asset ID</TableHeaderCell>
                 <TableHeaderCell width={25}>Owner</TableHeaderCell>
+                <TableHeaderCell ></TableHeaderCell>
               </TableHeaderRow>
             </thead>
             <tbody>
@@ -166,6 +190,15 @@ export const TrackingTables = (props: Props): JSX.Element => {
                       <TableDataCell>{mintedList.length - idx}</TableDataCell>
                       <TableDataCell>{el.asset_id}</TableDataCell>
                       <TableDataCell>{el.owner}</TableDataCell>
+                      <TableDataCell>
+                        <Button
+                          smallSize={true}
+                          onClick={() =>
+                            claimProton(el.asset_id)
+                          }>
+                          Claim
+                        </Button>
+                      </TableDataCell>
                     </TableRow>
                   ))}
               </TableContentWrapper>

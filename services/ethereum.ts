@@ -47,6 +47,7 @@ export type ETH_ASSET = {
 export type NFT_ATTR = {
   name: string;
   image: string;
+  img?: string;
   description: string;
 };
 
@@ -79,7 +80,7 @@ export const getNfts = async (owner: string): Promise<ETH_ASSET[]> => {
     } while (page);
 
     const reqs = ownedNfts.map(async (nft) => {
-      let attributes = {
+      let attributes: NFT_ATTR = {
         name: nft.metadata.name,
         description: nft.metadata.description,
         image: nft.metadata.image,
@@ -221,11 +222,9 @@ export const getDepositList = async (
     const res = await nftBridgeContract.tokensByUser(owner);
     return res;
   } catch (e) {
-    const message = e.message[0].toUpperCase() + e.message.slice(1);
-    return {
-      success: false,
-      error: message || 'An error has occurred while trying to teleport.',
-    };
+    console.log(e)
+    // const message = e.message[0].toUpperCase() + e.message.slice(1);
+    return [];
   }
 };
 
@@ -243,10 +242,7 @@ export const approvedNFT = async (
     const res = await nftBridgeContract.approvedNFT(contract);
     return res;
   } catch (e) {
-    const message = e.message[0].toUpperCase() + e.message.slice(1);
-    return {
-      success: false,
-      error: message || 'An error has occurred while calling approvedNFT.',
-    };
+    console.log(e)
+    return false;
   }
 };
